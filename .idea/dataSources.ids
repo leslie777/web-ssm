@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - samp_db@localhost" uuid="3040ce66-a2f3-44a4-bd75-4d846372b9df">
+    <database-info product="MySQL" version="5.7.21" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.44 ( Revision: b3cda4f864902ffdde495b9df93937c3e20009be )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.4">
+      <schema id="1" name="samp_db"/>
+      <table id="2" parent="1" name="tb_user"/>
+      <column id="3" parent="2" name="UserID">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="4" parent="2" name="UserName">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="5" parent="2" name="RealName">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="6" parent="2" name="Password">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="7" parent="2" name="IsLock">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="8" parent="2" name="CreateTime">
+        <data-type>datetime</data-type>
+        <default-expression>&apos;CURRENT_TIMESTAMP&apos;</default-expression>
+      </column>
+      <index id="9" parent="2" name="id">
+        <columns>UserName</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="10" parent="2" name="id">
+        <columns>UserName</columns>
+        <underlying-index>id</underlying-index>
+      </key>
+      <key id="11" parent="2" name="PRIMARY">
+        <columns>UserID</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>
