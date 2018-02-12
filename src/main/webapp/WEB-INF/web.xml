@@ -6,7 +6,14 @@
          version="3.0">
 
   <display-name>web-ssm</display-name>
-
+    <!--一下应该是JavaEE标准规定的，servlet容器需要在应用项目启动时，
+    给应用项目初始化一个ServletContext作为公共环境容器存放公共信息。ServletContext中的信息都是由容器提供的。-->
+    <!--web容器(如tomcat)启动时，会先读取wen.xml文件中的内容
+    最先读取的是<listener>和 <context-param>
+    紧接着,容器创建一个ServletContext(上下文),这个WEB项目所有部分都将共享这个上下文.，
+    将context-param中的值按照键值对放入上下文servletcontext
+    然后创建listener的实例，监听器中的contextInitialized(ServletContextEvent args)初始化方法，拿到上下文参数处理
+       -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring-mybatis.xml</param-value>
@@ -16,6 +23,26 @@
     <param-name>log4jConfigLocation</param-name>
     <param-value>classpath:log4j.properties</param-value>
   </context-param>
+
+  <!-- spring监听器 Spring 必须的配置，
+  ContextLoaderListener实现ServletContextListener接口，监听web容器的启动与停止，在启动时，加载上下文中配置文件contextConfigLocation
+  默认会读取applicationContext.xml(在spring源码ContextLoader.properties文件中定义)，将其中所有bean初始化放入WebApplicationContext（ioc容器）
+  并将ROOTWEBAPPLICATIONCONTEXTATTRIBUTE作为key将ioc容器放入ServletContest中，此处只在web容器启动和关闭时调用，所以只支持单例bean-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+    <!--这是非必需的Spring监听器，用于实现两外三个bean作用域socpe，
+    实现ServletRequestListener接口，在每次请求时更新ioc容器-->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+  <!-- 防止spring内存溢出监听器，比如quartz -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+
 
   <!-- 编码过滤器 -->
   <filter>
@@ -31,15 +58,6 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- spring监听器 -->
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-
-  <!-- 防止spring内存溢出监听器，比如quartz -->
-  <listener>
-    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-  </listener>
 
 
   <!-- spring mvc servlet-->
@@ -48,9 +66,11 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
+      <!--默认是找“/WEB-INF/springmvc-servlet.xml/”-->
       <param-value>classpath:spring-mvc.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+    <!--servlet3.0 开始支持的异步controller-->
     <async-supported>true</async-supported>
   </servlet>
   <servlet-mapping>

@@ -14,13 +14,16 @@
     <context:component-scan base-package="com.fk.controller"/>
 
     <!-- 开启SpringMVC注解模式 -->
+    <!--简写模式，或自动注入  DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter 等bean,-->
     <mvc:annotation-driven/>
 
     <!-- 静态资源默认servlet配置 -->
     <mvc:default-servlet-handler/>
 
     <!-- 配置jsp 显示ViewResolver -->
+    <!--InternalResourceViewResolver是一个辅助bean，会在ModelAndView返回的视图名前加上prefix指定的前缀，在最后加上suffer指定的后缀，-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--jstl时jsp标准标签库-->
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/html/"/>
         <property name="suffix" value=".html"/>
